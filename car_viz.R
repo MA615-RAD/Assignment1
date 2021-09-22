@@ -1,0 +1,58 @@
+
+
+library(tidyverse)
+#package needs to be installed on someone's local machine in order for this to work
+
+# call built-in data mtcars.
+data(mtcars)
+
+# Select only car models where mpg<20
+mtcars_mpg2 <- mtcars[mtcars$mpg < 20,]
+
+nrow(mtcars_mpg2)
+#We learned that there are 18 cars where mpg is <20
+
+# Reduce the variables to mpg, cyl, disp, hp, gears
+mtcars_mpg2 <- mtcars_mpg2[, c(1,2,3,4,10)]
+
+# read the R file hand_functions.R so that it can be used
+# notice that with echo = TRUE 
+source(file = "hand_functions.R", echo = TRUE)
+
+# Now use the function from hand_functions.R
+#Need to make sure this is also in the project file for this to run
+
+sp_out <- sum_special(mtcars_mpg2)
+
+sp_out
+#The highest positively correlated variables are disp and cyl
+
+#library(esquisse)
+# 
+#esquisser(data = mtcars_mpg2, viewer = "browser")
+
+#This will also not work if someone doesn't have esquisse installed
+
+ggplot(mtcars_mpg2) +
+  aes(x = disp, y = mpg) +
+  geom_point(shape = "bullet", size = 4L, colour = "#B22222") +
+  geom_smooth(span = 0.5) +
+  theme_minimal()
+
+#mpg seems to trend downward as disp increases.
+
+
+# note that this boxplot cannot be made with esquisse() unless
+# the data is adjusted.  What adjustment is needed?
+
+
+ggplot(mtcars_mpg2, aes(x=as.factor(cyl), y=mpg)) + 
+  geom_boxplot(fill="slateblue", alpha=0.2) + 
+  xlab("cyl")
+
+#cylinders needs to be treated as a factor for this to work in esquisse
+
+
+#In order for the pdfs and the htmls to be created, someone would need to hit file, knit and select html and/or pdf
+
+
